@@ -4,3 +4,4 @@ dev-data
 .cache/
 .idea/
 .parcel-cache
+dist/
