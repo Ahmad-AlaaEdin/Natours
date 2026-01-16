@@ -5,8 +5,9 @@ import {
   useEffect,
   type ReactNode,
 } from "react";
-import api, { setAccessToken } from "../services/api";
-import type { LoginCredentials, SignupData, User } from "../types/auth";
+import { authApi } from "@/services/authApi";
+import { setToken, removeToken } from "@/utils/token";
+import type { LoginCredentials, SignupData, User } from "@/types/auth";
 
 interface AuthContextType {
   user: User | null;
@@ -34,14 +35,18 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const checkAuth = async () => {
     try {
-      const response = await api.get("/v1/users/me");
-      const { data, token } = response.data;
+      const userData = await authApi.verifyAuth();
 
-      setAccessToken(token);
-      setUser(data);
+      if (userData) {
+        setUser(userData);
+      } else {
+        setUser(null);
+        removeToken();
+      }
     } catch (error) {
-      setAccessToken(null);
+      console.error("Auth check failed:", error);
       setUser(null);
+      removeToken();
     } finally {
       setLoading(false);
     }
@@ -49,10 +54,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const login = async ({ email, password }: LoginCredentials) => {
     try {
-      const response = await api.post("/v1/users/login", { email, password });
-      const { token, data } = response.data;
+      const response = await authApi.login({ email, password });
+      const { token, data } = response;
 
-      setAccessToken(token);
+      setToken(token);
       setUser(data.user);
 
       return { success: true };
@@ -66,21 +71,21 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const logout = async () => {
     try {
-      await api.get("/v1/users/logout");
+      await authApi.logout();
     } catch (error) {
       console.error("Logout error:", error);
     } finally {
-      setAccessToken(null);
+      removeToken();
       setUser(null);
     }
   };
 
   const register = async (userData: SignupData) => {
     try {
-      const response = await api.post("/v1/users/signup", userData);
-      const { token, data } = response.data;
+      const response = await authApi.signup(userData);
+      const { token, data } = response;
 
-      setAccessToken(token);
+      setToken(token);
       setUser(data.user);
 
       return { success: true };
