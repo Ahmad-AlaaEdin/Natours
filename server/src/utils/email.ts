@@ -26,13 +26,22 @@ class Email {
     this.to = user.email;
     this.firstName = user.name.split(' ')[0];
     this.url = url;
-    this.from = `Ahmad AlaaEddin <${process.env.EMAIL_FROM}>`;
+    this.from = `Natours <${process.env.EMAIL_FROM}>`;
   }
 
   private newTransport(): Transporter {
     console.log(process.env.NODE_ENV);
     if (process.env.NODE_ENV === 'production') {
-      // Sendgrid
+      // Brevo SMTP Configuration
+      console.log('🔧 Brevo Config:');
+      console.log('  Host:', process.env.BREVO_HOST);
+      console.log('  Port:', process.env.BREVO_PORT);
+      console.log('  Login:', process.env.BREVO_LOGIN);
+      console.log(
+        '  Password:',
+        process.env.BREVO_PASSWORD ? '***SET***' : 'MISSING',
+      );
+
       const config: EmailConfig = {
         host: process.env.BREVO_HOST!,
         port: Number(process.env.BREVO_PORT),
@@ -44,11 +53,11 @@ class Email {
       return nodemailer.createTransport(config);
     }
     const config: EmailConfig = {
-      host: process.env.EMAIL_HOST!,
-      port: Number(process.env.EMAIL_PORT),
+      host: process.env.DEV_EMAIL_HOST!,
+      port: Number(process.env.DEV_EMAIL_PORT),
       auth: {
-        user: process.env.EMAIL_USERNAME!,
-        pass: process.env.EMAIL_PASSWORD!,
+        user: process.env.DEV_EMAIL_USERNAME!,
+        pass: process.env.DEV_EMAIL_PASSWORD!,
       },
     };
     return nodemailer.createTransport(config);

@@ -33,13 +33,18 @@ export const getCheckoutSession = catchAsync(
 
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ['card'],
-      success_url: `${req.protocol}://${req.get('host')}/?tour=${
-        req.params.tourId
-      }&user=${req.user!.id}&price=${tour.price}`,
-      cancel_url: `${req.protocol}://${req.get('host')}/tour/${tour.slug}`,
+
+      success_url: `${process.env.CLIENT_URL || 'http://localhost:5173'}/booking-success?session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${process.env.CLIENT_URL || 'http://localhost:5173'}/tour/${tour._id}`,
       mode: 'payment',
       customer_email: req.user!.email,
       client_reference_id: req.params.tourId,
+
+      metadata: {
+        userId: req.user!.id,
+        tourId: req.params.tourId,
+        tourPrice: tour.price.toString(),
+      },
       line_items: [
         {
           price_data: {
@@ -63,18 +68,64 @@ export const getCheckoutSession = catchAsync(
   },
 );
 
-export const createBookingCheckout = catchAsync(
+export const webhookCheckout = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
-    const { tour, user, price } = req.query as {
-      tour?: string;
-      user?: string;
-      price?: string;
-    };
+    const signature = req.headers['stripe-signature'] as string;
 
-    if (!tour || !user || !price) return next();
+    if (!signature) {
+      return next(new AppError('No stripe signature found', 400));
+    }
 
-    await Booking.create({ tour, user, price: Number(price) });
-    res.redirect(req.originalUrl.split('?')[0]);
+    if (!process.env.STRIPE_WEBHOOK_SECRET) {
+      return next(new AppError('STRIPE_WEBHOOK_SECRET is not configured', 500));
+    }
+
+    let event;
+
+    try {
+      event = stripe.webhooks.constructEvent(
+        req.body,
+        signature,
+        process.env.STRIPE_WEBHOOK_SECRET,
+      );
+    } catch (err: any) {
+      return next(
+        new AppError(
+          `Webhook signature verification failed: ${err.message}`,
+          400,
+        ),
+      );
+    }
+
+    if (event.type === 'checkout.session.completed') {
+      const session = event.data.object as any;
+
+      const tourId = session.metadata?.tourId || session.client_reference_id;
+      const userId = session.metadata?.userId;
+      const price = session.metadata?.tourPrice || session.amount_total / 100;
+
+      if (tourId && userId && price) {
+        await Booking.create({
+          tour: tourId,
+          user: userId,
+          price: Number(price),
+        });
+      }
+    }
+
+    res.status(200).json({ received: true });
+  },
+);
+
+export const getMyBookings = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const bookings = await Booking.find({ user: req.user!.id });
+
+    res.status(200).json({
+      status: 'success',
+      results: bookings.length,
+      data: bookings,
+    });
   },
 );
 

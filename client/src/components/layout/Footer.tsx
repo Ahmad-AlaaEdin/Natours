@@ -22,9 +22,7 @@ const Footer = () => {
       }}
     >
       <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Main Footer Content */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12 mb-12">
-          {/* Company Info */}
           <div className="space-y-4">
             <Link to="/" className="inline-block">
               <img
@@ -38,7 +36,7 @@ const Footer = () => {
               Unforgettable tours led by expert guides in breathtaking
               locations.
             </p>
-            {/* Social Media */}
+
             <div className="flex gap-3 pt-2">
               <a
                 href="https://facebook.com"
@@ -95,7 +93,6 @@ const Footer = () => {
             </div>
           </div>
 
-          {/* Quick Links */}
           <div>
             <h3
               className="font-semibold text-base mb-4"
@@ -128,7 +125,6 @@ const Footer = () => {
             </ul>
           </div>
 
-          {/* Support */}
           <div>
             <h3
               className="font-semibold text-base mb-4"
@@ -161,7 +157,6 @@ const Footer = () => {
             </ul>
           </div>
 
-          {/* Contact & Newsletter */}
           <div>
             <h3
               className="font-semibold text-base mb-4"
@@ -245,7 +240,6 @@ const Footer = () => {
           </div>
         </div>
 
-        {/* Bottom Bar */}
         <div
           className="pt-8 border-t flex flex-col md:flex-row justify-between items-center gap-4"
           style={{ borderTopColor: "rgba(185, 167, 121, 0.3)" }}

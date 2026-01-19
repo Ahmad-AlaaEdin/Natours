@@ -8,6 +8,7 @@ import cookieParser from 'cookie-parser';
 import rateLimit from 'express-rate-limit';
 import { xss } from 'express-xss-sanitizer';
 import mongoSanitize from 'express-mongo-sanitize';
+import cors from 'cors';
 
 import AppError from './utils/appError';
 import globalErrorHandler from './controllers/errorController';
@@ -16,6 +17,8 @@ import tourRoute from './routes/tourRoutes';
 import reviewRoute from './routes/reviewRoutes';
 import viewRoutes from './routes/viewRoutes';
 import bookingRoute from './routes/bookingRoutes';
+import uploadRoute from './routes/uploadRoutes';
+import { webhookCheckout } from './controllers/bookingController';
 
 const app: Application = express();
 
@@ -24,7 +27,14 @@ app.set('views', path.join(__dirname, 'views'));
 app.use(express.static(path.join(__dirname, 'public')));
 
 //Global Middlewares
-app.use(express.static(path.join(__dirname, 'public')));
+
+// CORS Configuration
+const corsOptions = {
+  origin: ['http://localhost:5173', 'http://127.0.0.1:5173'], // React dev server
+  credentials: true, // Allow cookies
+  optionsSuccessStatus: 200,
+};
+app.use(cors(corsOptions));
 
 const helmetConfig = {
   contentSecurityPolicy: {
@@ -42,6 +52,7 @@ const helmetConfig = {
         "'self'",
         'http://127.0.0.1:8000',
         'https://api.stripe.com/',
+        'https://api.cloudinary.com',
         'ws://localhost:56046',
         'ws://127.0.0.1:56046',
         'ws://127.0.0.1:57232/',
@@ -64,12 +75,22 @@ const helmetConfig = {
         'https://carto.com/attributions',
         'https://*.basemaps.cartocdn.com',
         'https://upload.wikimedia.org',
+        'https://res.cloudinary.com',
       ],
     },
   },
 } as const;
 
 app.use(helmet(helmetConfig));
+
+// IMPORTANT: Stripe webhook must be BEFORE express.json()
+// Stripe needs the raw body to verify webhook signatures
+app.post(
+  '/api/v1/booking/webhook',
+  express.raw({ type: 'application/json' }),
+  webhookCheckout,
+);
+
 app.use(express.json());
 app.use(cookieParser());
 app.use(compression());
@@ -108,6 +129,7 @@ app.use('/api/v1/users', userRoute);
 app.use('/api/v1/tours', tourRoute);
 app.use('/api/v1/reviews', reviewRoute);
 app.use('/api/v1/booking', bookingRoute);
+app.use('/api/v1/upload', uploadRoute);
 
 app.all('*', (req: Request, res: Response, next: NextFunction) => {
   next(new AppError(`Can not find ${req.originalUrl}`, 404));

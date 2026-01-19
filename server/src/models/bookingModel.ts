@@ -42,7 +42,7 @@ const bookingSchema = new Schema<BookingDocument>(
 bookingSchema.pre(/^find/, function (this: mongoose.Query<any, any>, next) {
   this.populate('user').populate({
     path: 'tour',
-    select: 'name',
+    select: 'name imageCover duration startLocation',
   });
 
   next();

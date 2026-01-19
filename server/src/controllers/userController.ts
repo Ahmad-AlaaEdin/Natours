@@ -96,6 +96,41 @@ export const deleteMe = catchAsync(
   },
 );
 
+/**
+ * Update user's profile picture with Cloudinary URL
+ * POST /api/users/update-avatar
+ */
+export const updateAvatar = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const { imageUrl } = req.body;
+
+    if (!imageUrl) {
+      return next(new AppError('Please provide an image URL', 400));
+    }
+
+    // Update the user's photo field with the Cloudinary URL
+    const user = await User.findByIdAndUpdate(
+      req.user!.id,
+      { photo: imageUrl },
+      {
+        new: true,
+        runValidators: true,
+      },
+    );
+
+    if (!user) {
+      return next(new AppError('User not found', 404));
+    }
+
+    res.status(200).json({
+      status: 'success',
+      data: {
+        user,
+      },
+    });
+  },
+);
+
 export const createUser = (req: Request, res: Response): void => {
   res.status(500).json({
     status: 'error',
