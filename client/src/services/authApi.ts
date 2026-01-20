@@ -11,7 +11,7 @@ export const authApi = {
   login: async (credentials: LoginCredentials): Promise<AuthResponse> => {
     const response = await axiosInstance.post<AuthResponse>(
       "/users/login",
-      credentials
+      credentials,
     );
     return response.data;
   },
@@ -19,7 +19,7 @@ export const authApi = {
   signup: async (data: SignupData): Promise<AuthResponse> => {
     const response = await axiosInstance.post<AuthResponse>(
       "/users/signup",
-      data
+      data,
     );
     return response.data;
   },
@@ -30,7 +30,7 @@ export const authApi = {
 
   getCurrentUser: async (): Promise<User> => {
     const response = await axiosInstance.get<{ data: { data: User } }>(
-      "/users/me"
+      "/users/me",
     );
     return response.data.data.data;
   },
@@ -38,7 +38,7 @@ export const authApi = {
   updatePassword: async (data: UpdatePasswordData): Promise<AuthResponse> => {
     const response = await axiosInstance.patch<AuthResponse>(
       "/users/updateMyPassword",
-      data
+      data,
     );
     return response.data;
   },
@@ -46,7 +46,7 @@ export const authApi = {
   forgotPassword: async (email: string): Promise<{ message: string }> => {
     const response = await axiosInstance.post<{ message: string }>(
       "/users/forgotPassword",
-      { email }
+      { email },
     );
     return response.data;
   },
@@ -54,11 +54,11 @@ export const authApi = {
   resetPassword: async (
     token: string,
     password: string,
-    passwordConfirm: string
+    passwordConfirm: string,
   ): Promise<AuthResponse> => {
     const response = await axiosInstance.patch<AuthResponse>(
       `/users/resetPassword/${token}`,
-      { password, passwordConfirm }
+      { password, passwordConfirm },
     );
     return response.data;
   },
@@ -66,9 +66,9 @@ export const authApi = {
   verifyAuth: async (): Promise<User | null> => {
     try {
       const response = await axiosInstance.get<{ data: { user: User } }>(
-        "/users/me"
+        "/users/me",
       );
-      return response.data.data.user;
+      return response.data.data;
     } catch (error) {
       return null;
     }

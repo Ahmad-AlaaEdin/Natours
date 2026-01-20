@@ -1,8 +1,5 @@
 import { v2 as cloudinary } from 'cloudinary';
 
-console.log('cloudinary here');
-console.log(process.env.CLOUDINARY_API_KEY);
-
 type CloudinaryConfig = {
   readonly cloud_name: string;
   readonly api_key: string;
