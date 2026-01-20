@@ -1,9 +1,6 @@
 import express, { Router } from 'express';
 import * as userController from './../controllers/userController';
 import * as authController from './../controllers/authController';
-import multer from 'multer';
-
-const upload = multer({ dest: 'public/img/users' });
 
 const router: Router = express.Router();
 
@@ -13,7 +10,6 @@ router.get('/logout', authController.logout);
 router.post('/forgotPassword', authController.forgotPassword);
 router.patch('/resetPassword/:token', authController.resetPassword);
 
-router.post('/test', userController.uploadUserPhoto, userController.test);
 router.use(authController.protect);
 
 router.patch(
@@ -28,12 +24,7 @@ router.get(
   userController.getMe,
   userController.getUser,
 );
-router.patch(
-  '/updateMe',
-  userController.uploadUserPhoto,
-  userController.resizeUserPhoto,
-  userController.updateMe,
-);
+router.patch('/updateMe', userController.updateMe);
 router.post('/update-avatar', userController.updateAvatar);
 router.delete('/deleteMe', userController.deleteMe);
 

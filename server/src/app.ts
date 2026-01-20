@@ -15,16 +15,11 @@ import globalErrorHandler from './controllers/errorController';
 import userRoute from './routes/userRoutes';
 import tourRoute from './routes/tourRoutes';
 import reviewRoute from './routes/reviewRoutes';
-import viewRoutes from './routes/viewRoutes';
 import bookingRoute from './routes/bookingRoutes';
 import uploadRoute from './routes/uploadRoutes';
 import { webhookCheckout } from './controllers/bookingController';
 
 const app: Application = express();
-
-app.set('view engine', 'pug');
-app.set('views', path.join(__dirname, 'views'));
-app.use(express.static(path.join(__dirname, 'public')));
 
 //Global Middlewares
 
@@ -124,7 +119,6 @@ const hppConfig = {
 app.use(hpp(hppConfig));
 
 //Routes
-app.use('/', viewRoutes);
 app.use('/api/v1/users', userRoute);
 app.use('/api/v1/tours', tourRoute);
 app.use('/api/v1/reviews', reviewRoute);
