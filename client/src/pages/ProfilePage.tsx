@@ -14,7 +14,6 @@ import {
   MapPin,
   Calendar,
   Star,
-  Award,
   Ticket,
   Clock,
   DollarSign,
@@ -447,7 +446,7 @@ export default function ProfilePage() {
                                     month: "short",
                                     day: "numeric",
                                     year: "numeric",
-                                  }
+                                  },
                                 )}
                               </span>
                             </div>

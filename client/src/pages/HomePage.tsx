@@ -1,13 +1,12 @@
 import { useState, useEffect } from "react";
 import TourCard from "@/components/TourCard";
-import FilterBar from "@/components/FilterBar";
 import type { Tour } from "@/types/tour";
 import { getTours } from "@/services/toursService";
 import PageHero from "@/components/home/PageHero";
 import TourLoadingSkeleton from "@/components/home/TourLoadingSkeleton";
 import ToursEmptyState from "@/components/home/ToursEmptyState";
 export default function HomePage() {
-  const [selectedFilter, setSelectedFilter] = useState<string>("All Tours");
+  const [selectedFilter] = useState<string>("All Tours");
   const [tours, setTours] = useState<Tour[]>([]);
   const [loading, setLoading] = useState(true);
   useEffect(() => {

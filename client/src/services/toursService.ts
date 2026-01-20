@@ -4,16 +4,12 @@ import type { Tour } from "@/types/tour";
 interface ToursApiResponse {
   status: string;
   results: number;
-  data: {
-    data: Tour[];
-  };
+  data: Tour[];
 }
 
 interface TourApiResponse {
   status: string;
-  data: {
-    data: Tour;
-  };
+  data: Tour;
 }
 
 export async function getTours(): Promise<Tour[]> {

@@ -68,7 +68,7 @@ export const authApi = {
       const response = await axiosInstance.get<{ data: { user: User } }>(
         "/users/me",
       );
-      return response.data.data;
+      return response.data.data.user;
     } catch (error) {
       return null;
     }
