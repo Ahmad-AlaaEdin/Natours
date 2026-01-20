@@ -1,74 +1,8 @@
 import { Request, Response, NextFunction } from 'express';
-import multer, { FileFilterCallback } from 'multer';
-import sharp from 'sharp';
 import Tour from './../models/tourModel';
 import AppError from '../utils/appError';
 import catchAsync from './../utils/catchAsync';
 import * as factory from './../controllers/handlerFactory';
-
-const multerStorage = multer.memoryStorage();
-
-const multerFilter = (
-  req: Request,
-  file: Express.Multer.File,
-  cb: FileFilterCallback,
-): void => {
-  if (file.mimetype.startsWith('image')) {
-    cb(null, true);
-  } else {
-    cb(
-      new AppError('Not An Image! Please Upload Only Images ', 400) as any,
-      false,
-    );
-  }
-};
-
-const upload = multer({
-  storage: multerStorage,
-  fileFilter: multerFilter,
-});
-
-export const uploadTourImages = upload.fields([
-  { name: 'imageCover', maxCount: 1 },
-  { name: 'images', maxCount: 3 },
-]);
-
-export const resizeTourImages = catchAsync(
-  async (req: Request, res: Response, next: NextFunction) => {
-    const files = req.files as {
-      imageCover?: Express.Multer.File[];
-      images?: Express.Multer.File[];
-    };
-
-    if (!files.imageCover || !files.images) return next();
-
-    // 1) Cover image
-    req.body.imageCover = `tour-${req.params.id}-${Date.now()}-cover.jpeg`;
-    await sharp(files.imageCover[0].buffer)
-      .resize(2000, 1333)
-      .toFormat('jpeg')
-      .jpeg({ quality: 90 })
-      .toFile(`public/img/tours/${req.body.imageCover}`);
-
-    // 2) Images
-    req.body.images = [];
-
-    await Promise.all(
-      files.images.map(async (file, i) => {
-        const filename = `tour-${req.params.id}-${Date.now()}-${i + 1}.jpeg`;
-
-        await sharp(file.buffer)
-          .resize(2000, 1333)
-          .toFormat('jpeg')
-          .jpeg({ quality: 90 })
-          .toFile(`public/img/tours/${filename}`);
-
-        req.body.images.push(filename);
-      }),
-    );
-    next();
-  },
-);
 
 export const aliasTopTours = (
   req: Request,

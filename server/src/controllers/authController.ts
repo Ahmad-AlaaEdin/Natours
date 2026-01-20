@@ -150,41 +150,6 @@ export const protect = catchAsync(
   },
 );
 
-export const isLoggedIn = async (
-  req: Request,
-  res: Response,
-  next: NextFunction,
-): Promise<void> => {
-  console.log(req.originalUrl.split('?')[0]);
-  if (req.cookies.jwt) {
-    try {
-      // 1) verify token
-      const decoded = jwt.verify(
-        req.cookies.jwt,
-        jwtConfig.secret,
-      ) as JwtDecoded;
-
-      // 2) Check if user still exists
-      const currentUser = await User.findById(decoded.id);
-      if (!currentUser) {
-        return next();
-      }
-
-      // 3) Check if user changed password after the token was issued
-      if (currentUser.changedPasswordAfter(decoded.iat)) {
-        return next();
-      }
-
-      // THERE IS A LOGGED IN USER
-      res.locals.user = currentUser;
-      return next();
-    } catch (err) {
-      return next();
-    }
-  }
-  next();
-};
-
 export const restrictTo = (...roles: string[]) => {
   return (req: Request, res: Response, next: NextFunction): void => {
     if (!roles.includes(req.user!.role)) {
