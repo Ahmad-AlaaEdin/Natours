@@ -8,26 +8,35 @@ import Container from "@/components/layout/Container";
 export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const navigate = useNavigate();
-  const [isLoggedIn] = useState(false);
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, user } = useAuth();
 
   return (
     <header className="sticky top-0 z-50 backdrop-blur-lg bg-white/95 border-b border-brand-secondary/30 shadow-md">
       <Container as="nav">
         <div className="flex items-center justify-between h-16 sm:h-20">
           <Link to="/" className="flex items-center  group flex-col">
-            <img src="/src/assets/images/logo.png" alt="" className="w-60" />
+            <img
+              src="/src/assets/images/logo.png"
+              alt=""
+              className="md:w-60 w-40"
+            />
           </Link>
 
           <div className="hidden md:flex items-center gap-3">
-            {isAuthenticated ? (
+            {isAuthenticated && user ? (
               <Button
                 variant="ghost"
-                className="hover:bg-brand-accent text-brand-dark"
+                className="hover:bg-brand-accent text-brand-dark flex items-center gap-2 px-2"
                 onClick={() => navigate("/profile")}
               >
-                <User className="h-4 w-4 mr-2" />
-                Profile
+                <img
+                  src={user.photo || "/img/default.png"}
+                  alt={user.name}
+                  className="w-8 h-8 rounded-full object-cover border border-brand-primary/50"
+                />
+                <span className="font-medium text-sm">
+                  {user.name.split(" ")[0]}
+                </span>
               </Button>
             ) : (
               <>
@@ -64,7 +73,7 @@ export default function Header() {
           <div className="md:hidden py-4 border-t border-brand-secondary/30">
             <div className="flex flex-col gap-4">
               <div className="flex flex-col gap-2">
-                {isLoggedIn ? (
+                {isAuthenticated ? (
                   <Button
                     variant="outline"
                     className="w-full border-brand-secondary text-brand-dark"

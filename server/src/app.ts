@@ -25,7 +25,12 @@ app.set('trust proxy', 1);
 
 // CORS Configuration
 const corsOptions = {
-  origin: ['http://localhost:5173', 'http://127.0.0.1:5173'], // React dev server
+  origin: [
+    'http://localhost:5173',
+    'http://127.0.0.1:5173',
+    'http://192.168.1.38:5173',
+    'http://172.18.0.1:5173',
+  ], // React dev server
   credentials: true, // Allow cookies
   optionsSuccessStatus: 200,
 };
@@ -46,6 +51,8 @@ const helmetConfig = {
       connectSrc: [
         "'self'",
         'http://127.0.0.1:8000',
+        'http://192.168.1.38:8000',
+        'http://172.18.0.1:8000',
         'https://api.stripe.com/',
         'https://api.cloudinary.com',
         'ws://localhost:56046',

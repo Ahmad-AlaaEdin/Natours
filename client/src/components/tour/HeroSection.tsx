@@ -1,23 +1,14 @@
 import { useNavigate } from "react-router-dom";
 import { MapPin, Calendar, Clock, Users, Star, ArrowLeft } from "lucide-react";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import type { Tour } from "@/types/tour";
-import Container from "@/components/layout/Container";
+import { formatTourDate } from "@/utils/date";
 
 interface HeroSectionProps {
   tour: Tour;
-  difficultyDisplay: string;
-  diffColor: { bg: string; text: string; border: string };
-  getFormattedDate: (tour: Tour) => string;
 }
 
-export default function HeroSection({
-  tour,
-  difficultyDisplay,
-  diffColor,
-  getFormattedDate,
-}: HeroSectionProps) {
+export default function HeroSection({ tour }: HeroSectionProps) {
   const navigate = useNavigate();
 
   return (
@@ -46,19 +37,9 @@ export default function HeroSection({
         </Button>
       </div>
 
-      <div className="absolute bottom-0 left-0 right-0 p-8">
-        <Container className="w-full">
+      <div className="absolute bottom-0 left-0 right-0 py-4 container-page w-full ">
+        <div className=" sm:p-8">
           <div className="flex flex-wrap items-center gap-3 mb-4">
-            <Badge
-              className="border backdrop-blur-sm"
-              style={{
-                backgroundColor: diffColor.bg,
-                color: diffColor.text,
-                borderColor: diffColor.border,
-              }}
-            >
-              {difficultyDisplay}
-            </Badge>
             <div className="flex items-center gap-1 bg-white/95 backdrop-blur-sm px-3 py-1.5 rounded-full">
               <Star
                 className="h-4 w-4"
@@ -81,7 +62,7 @@ export default function HeroSection({
             </div>
             <div className="flex items-center gap-2">
               <Calendar className="h-5 w-5" style={{ color: "#b9a779" }} />
-              <span>{getFormattedDate(tour)}</span>
+              <span>{formatTourDate(tour)}</span>
             </div>
             <div className="flex items-center gap-2">
               <Clock className="h-5 w-5" style={{ color: "#b9a779" }} />
@@ -94,7 +75,7 @@ export default function HeroSection({
               <span>{tour.maxGroupSize} people</span>
             </div>
           </div>
-        </Container>
+        </div>
       </div>
     </div>
   );

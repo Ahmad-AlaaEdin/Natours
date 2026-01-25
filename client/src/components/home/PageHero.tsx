@@ -1,7 +1,7 @@
 export default function PageHero() {
   return (
     <div className="mb-12 text-center relative">
-      <div className="absolute top-0 bottom-0 right-0 w-1/4 pointer-events-none">
+      <div className="absolute top-0 bottom-0 right-0 w-1/4 pointer-events-none hidden md:block">
         <img
           src="/src/assets/images/pattern.svg"
           alt=""
@@ -9,7 +9,7 @@ export default function PageHero() {
         />
       </div>
 
-      <div className="absolute top-0 bottom-0 left-0 w-1/4 pointer-events-none">
+      <div className="absolute top-0 bottom-0 left-0 w-1/4 pointer-events-none hidden md:block">
         <img
           src="/src/assets/images/pattern.svg"
           alt=""

@@ -16,7 +16,7 @@ const Footer = () => {
   return (
     <footer className="border-t pt-12 pb-8 bg-brand-bg border-brand-secondary/30">
       <Container>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12 mb-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12 mb-12 text-center">
           <div className="space-y-4">
             <Link to="/" className="inline-block">
               <img
@@ -31,7 +31,7 @@ const Footer = () => {
               locations.
             </p>
 
-            <div className="flex gap-3 pt-2">
+            <div className="flex gap-3 pt-2 justify-center">
               <a
                 href="https://facebook.com"
                 target="_blank"
@@ -126,11 +126,11 @@ const Footer = () => {
               Get in Touch
             </h3>
             <div className="space-y-3 mb-6">
-              <div className="flex items-start gap-2">
+              <div className="flex items-start gap-2 justify-center">
                 <MapPin className="h-4 w-4 mt-0.5 shrink-0 text-brand-primary" />
                 <p className="text-sm text-brand-text">Damascus, Syria</p>
               </div>
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-2 justify-center">
                 <Mail className="h-4 w-4 shrink-0 text-brand-primary" />
                 <a
                   href="mailto:hello@damasgo.com"
@@ -145,13 +145,13 @@ const Footer = () => {
               <h4 className="font-medium text-sm mb-3 text-brand-dark">
                 Subscribe to Newsletter
               </h4>
-              <div className="flex gap-2">
+              <div className="flex flex-col sm:flex-row gap-2">
                 <input
                   type="email"
                   placeholder="Your email"
-                  className="flex-1 px-3 py-2 text-sm rounded-md border border-brand-secondary bg-white text-brand-dark focus:outline-none focus:ring-2 focus:border-brand-primary transition-all"
+                  className="flex-1 px-3 py-2 text-sm rounded-md border border-brand-secondary bg-white text-brand-dark focus:outline-none focus:ring-2 focus:border-brand-primary transition-all w-full"
                 />
-                <Button className="px-4 text-white shadow-lg hover:shadow-xl transition-all duration-200 bg-linear-to-br from-brand-primary to-brand-primary-dark">
+                <Button className="px-4 text-white shadow-lg hover:shadow-xl transition-all duration-200 bg-linear-to-br from-brand-primary to-brand-primary-dark w-full sm:w-auto">
                   <Mail className="h-4 w-4" />
                 </Button>
               </div>
@@ -160,27 +160,13 @@ const Footer = () => {
         </div>
 
         <div className="pt-8 border-t border-brand-secondary/30 flex flex-col md:flex-row justify-between items-center gap-4">
-          <p className="text-sm text-brand-text">
+          <p className="text-sm text-brand-text text-center w-full">
             © {currentYear} DamasGo. Created by{" "}
             <span className="font-medium text-brand-primary">
               Ahmad Alaa Eddin
             </span>
             . All rights reserved.
           </p>
-          <div className="flex gap-6">
-            <Link
-              to="/terms"
-              className="text-sm transition-colors duration-200 text-brand-text"
-            >
-              Terms of Service
-            </Link>
-            <Link
-              to="/privacy"
-              className="text-sm transition-colors duration-200 text-brand-text"
-            >
-              Privacy Policy
-            </Link>
-          </div>
         </div>
       </Container>
     </footer>

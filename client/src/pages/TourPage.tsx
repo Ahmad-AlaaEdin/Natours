@@ -144,41 +144,6 @@ export default function TourPage() {
     fetchTour();
   }, [id]);
 
-  const getDifficultyDisplay = (
-    difficulty: Tour["difficulty"],
-  ): DifficultyDisplay => {
-    const map: Record<Tour["difficulty"], DifficultyDisplay> = {
-      easy: "Easy",
-      medium: "Medium",
-      difficult: "Difficult",
-    };
-    return map[difficulty];
-  };
-
-  const getDifficultyColor = (difficulty: DifficultyDisplay) => {
-    switch (difficulty) {
-      case "Easy":
-        return { bg: "#428177", text: "#ffffff", border: "#054239" };
-      case "Medium":
-        return { bg: "#b9a779", text: "#ffffff", border: "#988561" };
-      case "Difficult":
-        return { bg: "#6b1f2a", text: "#ffffff", border: "#4a151e" };
-      default:
-        return { bg: "#3d3a3b", text: "#ffffff", border: "#161616" };
-    }
-  };
-
-  const getFormattedDate = (tour: Tour) => {
-    if (tour.startDates && tour.startDates.length > 0) {
-      const date = new Date(tour.startDates[0]);
-      return date.toLocaleDateString("en-US", {
-        month: "long",
-        year: "numeric",
-      });
-    }
-    return "TBA";
-  };
-
   const handleBooking = async (quantity: number) => {
     if (!isAuthenticated) {
       toast.error("Please log in to book a tour", {
@@ -247,20 +212,12 @@ export default function TourPage() {
     );
   }
 
-  const difficultyDisplay = getDifficultyDisplay(tour.difficulty);
-  const diffColor = getDifficultyColor(difficultyDisplay);
-
   return (
     <div className="min-h-screen pb-16">
-      <HeroSection
-        tour={tour}
-        difficultyDisplay={difficultyDisplay}
-        diffColor={diffColor}
-        getFormattedDate={getFormattedDate}
-      />
+      <HeroSection tour={tour} />
 
       <div className="container-page w-full mt-16">
-        <div className="grid grid-cols-1 lg:grid-cols-3  -mt-16 relative">
+        <div className="grid grid-cols-1 lg:grid-cols-3  mt-4 relative">
           <div className="lg:col-span-2">
             <div
               className="bg-white rounded-2xl  sm:p-8 mb-8 "

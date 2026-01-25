@@ -1,10 +1,9 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { MapPin, Calendar, Clock, Users, Star, ArrowRight } from "lucide-react";
-import { Badge } from "./ui/badge";
 import { Button } from "./ui/button";
 import type { Tour } from "@/types/tour";
-import type { DifficultyDisplay } from "@/types/tour";
+import { formatTourDate } from "@/utils/date";
 
 interface TourCardProps {
   tour: Tour;
@@ -13,44 +12,6 @@ interface TourCardProps {
 export default function TourCard({ tour }: TourCardProps) {
   const [isHovered, setIsHovered] = useState(false);
   const navigate = useNavigate();
-
-  const getDifficultyDisplay = (
-    difficulty: Tour["difficulty"],
-  ): DifficultyDisplay => {
-    const map: Record<Tour["difficulty"], DifficultyDisplay> = {
-      easy: "Easy",
-      medium: "Medium",
-      difficult: "Difficult",
-    };
-    return map[difficulty];
-  };
-
-  const getDifficultyColor = (difficulty: DifficultyDisplay) => {
-    switch (difficulty) {
-      case "Easy":
-        return { bg: "#428177", text: "#ffffff", border: "#054239" };
-      case "Medium":
-        return { bg: "#b9a779", text: "#ffffff", border: "#988561" };
-      case "Difficult":
-        return { bg: "#6b1f2a", text: "#ffffff", border: "#4a151e" };
-      default:
-        return { bg: "#3d3a3b", text: "#ffffff", border: "#161616" };
-    }
-  };
-
-  const getFormattedDate = () => {
-    if (tour.startDates && tour.startDates.length > 0) {
-      const date = new Date(tour.startDates[0]);
-      return date.toLocaleDateString("en-US", {
-        month: "long",
-        year: "numeric",
-      });
-    }
-    return "TBA";
-  };
-
-  const difficultyDisplay = getDifficultyDisplay(tour.difficulty);
-  const diffColor = getDifficultyColor(difficultyDisplay);
 
   return (
     <article
@@ -89,16 +50,6 @@ export default function TourCard({ tour }: TourCardProps) {
         />
 
         <div className="absolute top-4 left-4 right-4 flex justify-between items-start">
-          <Badge
-            className="backdrop-blur-sm border"
-            style={{
-              backgroundColor: diffColor.bg,
-              color: diffColor.text,
-              borderColor: diffColor.border,
-            }}
-          >
-            {difficultyDisplay}
-          </Badge>
           <div className="flex items-center gap-1 bg-white/95 backdrop-blur-sm px-2.5 py-1.5 rounded-full shadow-lg">
             <Star
               className="h-3.5 w-3.5"
@@ -169,7 +120,7 @@ export default function TourCard({ tour }: TourCardProps) {
             style={{ color: "#3d3a3b" }}
           >
             <Calendar className="h-3.5 w-3.5" style={{ color: "#428177" }} />
-            <span>{getFormattedDate()}</span>
+            <span>{formatTourDate(tour)}</span>
           </div>
           <div
             className="flex items-center gap-2 text-xs"
