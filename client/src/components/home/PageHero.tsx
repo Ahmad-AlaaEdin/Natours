@@ -1,17 +1,15 @@
+import pattern from "../../assets/images/pattern.svg";
+
 export default function PageHero() {
   return (
     <div className="mb-12 text-center relative">
       <div className="absolute top-0 bottom-0 right-0 w-1/4 pointer-events-none hidden md:block">
-        <img
-          src="/src/assets/images/pattern.svg"
-          alt=""
-          className="w-full h-full object-cover"
-        />
+        <img src={pattern} alt="" className="w-full h-full object-cover" />
       </div>
 
       <div className="absolute top-0 bottom-0 left-0 w-1/4 pointer-events-none hidden md:block">
         <img
-          src="/src/assets/images/pattern.svg"
+          src={pattern}
           alt=""
           className="w-full h-full object-cover rotate-180"
         />

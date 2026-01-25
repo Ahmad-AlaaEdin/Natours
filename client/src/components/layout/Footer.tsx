@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import logo from "../../assets/images/logo.png";
 import {
   Facebook,
   Twitter,
@@ -20,7 +21,7 @@ const Footer = () => {
           <div className="space-y-4">
             <Link to="/" className="inline-block">
               <img
-                src="/src/assets/images/logo.png"
+                src={logo}
                 alt="DamasGo"
                 className="w-48 opacity-90 hover:opacity-100 transition-opacity"
               />

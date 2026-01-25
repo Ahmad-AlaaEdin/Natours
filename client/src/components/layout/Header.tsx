@@ -1,4 +1,5 @@
 import { useState } from "react";
+import logo from "../../assets/images/logo.png";
 import { Link, useNavigate } from "react-router-dom";
 import { Menu, X, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -15,11 +16,7 @@ export default function Header() {
       <Container as="nav">
         <div className="flex items-center justify-between h-16 sm:h-20">
           <Link to="/" className="flex items-center  group flex-col">
-            <img
-              src="/src/assets/images/logo.png"
-              alt=""
-              className="md:w-60 w-40"
-            />
+            <img src={logo} alt="" className="md:w-60 w-40" />
           </Link>
 
           <div className="hidden md:flex items-center gap-3">

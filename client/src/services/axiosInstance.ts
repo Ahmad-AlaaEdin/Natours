@@ -1,9 +1,14 @@
 import axios, { type AxiosError, type InternalAxiosRequestConfig } from "axios";
 import { getToken, removeToken } from "@/utils/token";
 
-const baseURL = import.meta.env.VITE_API_URL;
+let baseURL = import.meta.env.VITE_API_URL;
+
 if (!baseURL) {
   throw new Error("VITE_API_URL is not defined");
+}
+
+if (!baseURL.startsWith("http://") && !baseURL.startsWith("https://")) {
+  baseURL = `https://${baseURL}`;
 }
 
 const axiosInstance = axios.create({
@@ -27,7 +32,7 @@ axiosInstance.interceptors.request.use(
   },
   (error: AxiosError) => {
     return Promise.reject(error);
-  }
+  },
 );
 
 axiosInstance.interceptors.response.use(
@@ -50,7 +55,7 @@ axiosInstance.interceptors.response.use(
     }
 
     return Promise.reject(error);
-  }
+  },
 );
 
 export default axiosInstance;
