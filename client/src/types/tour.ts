@@ -30,5 +30,3 @@ export interface Tour {
   id?: string;
   __v?: number;
 }
-
-export type DifficultyDisplay = "Easy" | "Medium" | "Difficult";

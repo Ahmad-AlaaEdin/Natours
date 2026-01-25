@@ -1,6 +1,6 @@
 import { getTourById } from "@/services/toursService";
 import { bookTour } from "@/services/bookingService";
-import type { Tour, DifficultyDisplay } from "@/types/tour";
+import type { Tour } from "@/types/tour";
 import { useEffect, useState, useCallback } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import useEmblaCarousel from "embla-carousel-react";
