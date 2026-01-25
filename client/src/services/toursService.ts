@@ -4,6 +4,7 @@ import type { Tour } from "@/types/tour";
 interface ToursApiResponse {
   status: string;
   results: number;
+  total: number;
   data: Tour[];
 }
 
@@ -12,13 +13,27 @@ interface TourApiResponse {
   data: Tour;
 }
 
-export async function getTours(): Promise<Tour[]> {
+export async function getTours(
+  page = 1,
+  limit = 6,
+  sort = "price",
+): Promise<{ tours: Tour[]; total: number }> {
   try {
-    const res = await axiosInstance.get<ToursApiResponse>("/tours");
-    return res.data.data || [];
+    const params = new URLSearchParams();
+    params.append("page", page.toString());
+    params.append("limit", limit.toString());
+    if (sort) params.append("sort", sort);
+
+    const res = await axiosInstance.get<ToursApiResponse>(
+      `/tours?${params.toString()}`,
+    );
+    return {
+      tours: res.data.data || [],
+      total: res.data.total || 0,
+    };
   } catch (error) {
     console.error("Error fetching tours:", error);
-    return [];
+    return { tours: [], total: 0 };
   }
 }
 

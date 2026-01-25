@@ -17,10 +17,10 @@ export default function FilterBar({
   onSortChange,
 }: FilterBarProps) {
   const sortLabels: Record<string, string> = {
-    "price-asc": "Price: Low to High",
-    "price-desc": "Price: High to Low",
-    "ratingsAverage-desc": "Highest Rated",
-    "ratingsAverage-asc": "Lowest Rated",
+    price: "Price: Low to High",
+    "-price": "Price: High to Low",
+    "-ratingsAverage": "Highest Rated",
+    ratingsAverage: "Lowest Rated",
   };
 
   return (
@@ -38,20 +38,16 @@ export default function FilterBar({
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" className="w-[180px]">
-            <DropdownMenuItem onClick={() => onSortChange("price-asc")}>
+            <DropdownMenuItem onClick={() => onSortChange("price")}>
               Price: Low to High
             </DropdownMenuItem>
-            <DropdownMenuItem onClick={() => onSortChange("price-desc")}>
+            <DropdownMenuItem onClick={() => onSortChange("-price")}>
               Price: High to Low
             </DropdownMenuItem>
-            <DropdownMenuItem
-              onClick={() => onSortChange("ratingsAverage-desc")}
-            >
+            <DropdownMenuItem onClick={() => onSortChange("-ratingsAverage")}>
               Highest Rated
             </DropdownMenuItem>
-            <DropdownMenuItem
-              onClick={() => onSortChange("ratingsAverage-asc")}
-            >
+            <DropdownMenuItem onClick={() => onSortChange("ratingsAverage")}>
               Lowest Rated
             </DropdownMenuItem>
           </DropdownMenuContent>

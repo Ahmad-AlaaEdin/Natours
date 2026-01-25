@@ -79,13 +79,17 @@ export const getAll = <T>(Model: Model<T>) =>
     )
       .filter()
       .sort()
-      .limitFields()
-      .paginate();
+      .limitFields();
+
+    const total = await Model.countDocuments(features.query.getFilter());
+
+    features.paginate();
 
     const docs = await features.query;
 
     res.status(200).json({
       status: 'success',
+      total,
       results: docs.length,
       data: docs,
     });

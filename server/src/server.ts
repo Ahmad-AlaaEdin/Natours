@@ -1,6 +1,5 @@
 import dotenv from 'dotenv';
 
-// Load environment variables FIRST before importing anything that uses them
 dotenv.config({ path: './src/config.env' });
 
 import mongoose from 'mongoose';
@@ -21,7 +20,7 @@ mongoose.connect(db).then(() => {
   console.log('Connect success');
 });
 
-const port = 3000;
+const port = process.env.PORT || 3000;
 const server: Server = app.listen(port, () => {
   console.log('app running');
 });

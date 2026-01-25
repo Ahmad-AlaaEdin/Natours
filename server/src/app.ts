@@ -25,13 +25,8 @@ app.set('trust proxy', 1);
 
 // CORS Configuration
 const corsOptions = {
-  origin: [
-    'http://localhost:5173',
-    'http://127.0.0.1:5173',
-    'http://192.168.1.38:5173',
-    'http://172.18.0.1:5173',
-  ], // React dev server
-  credentials: true, // Allow cookies
+  origin: ['http://localhost:5173', 'http://127.0.0.1:5173'],
+  credentials: true,
   optionsSuccessStatus: 200,
 };
 app.use(cors(corsOptions));
@@ -46,7 +41,6 @@ const helmetConfig = {
         'https://carto.com/attributions',
         'https://cdn.jsdelivr.net',
         'https://js.stripe.com/v3/',
-        //'ws://127.0.0.1:56046',
       ],
       connectSrc: [
         "'self'",
@@ -88,7 +82,7 @@ app.use(helmet(helmetConfig));
 // IMPORTANT: Stripe webhook must be BEFORE express.json()
 // Stripe needs the raw body to verify webhook signatures
 app.post(
-  '/api/v1/booking/webhook',
+  '/api/v1/webhook',
   express.raw({ type: 'application/json' }),
   webhookCheckout,
 );

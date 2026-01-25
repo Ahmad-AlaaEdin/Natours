@@ -34,8 +34,7 @@ export default function BookingSuccessPage() {
           Booking Successful!
         </h1>
         <p className="text-lg mb-8" style={{ color: "#3d3a3b", opacity: 0.7 }}>
-          Your tour has been successfully booked. We've sent a confirmation
-          email to your registered email address.
+          Your tour has been successfully booked.
         </p>
 
         {sessionId && (
